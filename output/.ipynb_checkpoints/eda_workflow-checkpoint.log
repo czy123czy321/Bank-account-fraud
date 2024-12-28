@@ -1,0 +1,7 @@
+2024-12-18 15:20:18 - Starting workflow for EDA.
+[NbConvertApp] Converting notebook /Users/zoe/Documents/Bank-account-fraud/code/TEST.ipynb to script
+[NbConvertApp] Writing 125 bytes to /Users/zoe/Documents/Bank-account-fraud/code/TEST.py
+2024-12-18 15:20:21 - EDA notebook converted to script in /Users/zoe/Documents/Bank-account-fraud/code.
+2024-12-18 15:20:21 - Python script executed successfully, saved to /Users/zoe/Documents/Bank-account-fraud/output
+2024-12-18 15:20:21 - Opening the output in the browser.
+2024-12-18 15:20:21 - Workflow completed. Output logged to /Users/zoe/Documents/Bank-account-fraud/output/eda_workflow.log
