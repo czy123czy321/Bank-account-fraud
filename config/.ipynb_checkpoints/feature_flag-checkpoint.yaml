@@ -1,0 +1,7 @@
+feature_engineering:
+  impute: true
+  one_hot_encoding: true
+  smote: true
+  robust_scaling: true
+  binning: true
+  outlier_handling: false
