@@ -1,0 +1,11 @@
+feature_engineering:
+  impute: true
+  one_hot_encoding: true
+  smote: true
+  smote_oversample_ratio: 0.8
+  smote_undersample_ratio: 1.0
+  robust_scaler: true
+  binning: true
+  outlier_handling: false
+  mutual_information: false
+  chi2_test: false
