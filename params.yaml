@@ -1,4 +1,4 @@
 ---
-data_location: ./data
-output_location: ./output
-
+data_location: /data
+output_location: /output
+code_location: /code

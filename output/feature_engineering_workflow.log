@@ -1,0 +1,4 @@
+2025-01-29 16:59:46 - Starting workflow for feature engineering.
+[NbConvertApp] Converting notebook /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering/preprocessing.ipynb to script
+[NbConvertApp] Writing 21665 bytes to /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering/preprocessing.py
+2025-01-29 16:59:48 - feature engineering preprocessing notebook converted to script in /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering.

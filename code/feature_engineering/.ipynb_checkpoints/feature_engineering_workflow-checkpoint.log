@@ -1,0 +1,6 @@
+2025-01-29 17:20:57 - Starting workflow for feature engineering.
+[NbConvertApp] Converting notebook /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering/preprocessing_notebook.ipynb to script
+[NbConvertApp] Writing 21665 bytes to /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering/preprocessing.py
+2025-01-29 17:20:59 - feature engineering preprocessing notebook converted to script in /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering.
+/opt/homebrew/Cellar/python@3.11/3.11.10/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/zoe/Documents/Bank-account-fraud/code/feature_engineering/final_feature_engineering.py': [Errno 2] No such file or directory
+2025-01-29 17:20:59 - Failed to execute the feature engineering Python script.

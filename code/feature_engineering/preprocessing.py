@@ -542,7 +542,7 @@ def chi2_test(X_train, y_train):
 # In[9]:
 
 
-def export_final_df(X_train, y_train, X_test, y_test):
+def export_final_df(X_train, y_train, X_test, y_test, data_folder):
     bool_features = [col for col in X_train.columns if X_train[col].dtypes == 'bool']
     X_train[bool_features] = X_train[bool_features].astype("int")
     y_train = y_train.astype("int")
