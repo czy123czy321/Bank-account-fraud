@@ -1,0 +1,35 @@
+tuning:
+  method: "random_search"  # options: random_search, grid_search, bayesian_optimization
+
+  random_search:
+    param_distributions:
+      n_estimators: [50, 100, 200, 500]
+      learning_rate: [0.01, 0.05, 0.1, 0.2]
+      max_depth: [3, 5, 7, 9]
+      subsample: [0.6, 0.8, 1.0]
+      colsample_bytree: [0.6, 0.8, 1.0]
+    n_iter: 50
+    cv: 3
+    scoring: "roc_auc"
+    random_state: 42
+
+  grid_search:
+    param_grid:
+      n_estimators: [100, 200, 300]
+      learning_rate: [0.01, 0.05, 0.1]
+      max_depth: [3, 6, 9]
+      subsample: [0.6, 0.8, 1.0]
+      colsample_bytree: [0.6, 0.8, 1.0]
+    cv: 5
+    scoring: "roc_auc"
+
+  bayesian_optimization:
+    param_bounds:
+      n_estimators: [50, 500]
+      learning_rate: [0.01, 0.2]
+      max_depth: [3, 10]
+      subsample: [0.5, 1.0]
+      colsample_bytree: [0.5, 1.0]
+    init_points: 5
+    n_iter: 25
+    scoring: "roc_auc"
