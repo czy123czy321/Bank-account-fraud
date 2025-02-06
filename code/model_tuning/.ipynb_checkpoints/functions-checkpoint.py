@@ -113,32 +113,42 @@ def objective(hyperparameters, dtrain, iteration):
 
 
 import csv
-def write_csv_test(outfile):
-    results = pd.DataFrame(columns = ['score', 'params', 'iterations'])
-    of_connection = open(out_file, 'a')
-    writer = csv.writer(of_connection)
-    writer.writerow([1,2,3])
-    of_connection.close()
+
+# def write_csv_test(outfile, iteration=5):
+#     results = pd.DataFrame(columns = ['score', 'params', 'iterations'],index = list(range(iteration)))
+#     # Open file once before loop
+#     with open(outfile, 'a', newline='') as of_connection:
+#         writer = csv.writer(of_connection)
+
+#         for i in range(iteration): 
+#             # Properly assign values to DataFrame
+#             results.loc[i] = [i + 5, i + 6, i + 7]
+
+#             # Write each row as a list
+#             writer.writerow([i + 5, i + 6, i + 7])
+
+#     results.sort_values('score', ascending=False, inplace=True)
+#     return results
+        
+# results = write_csv_test(out_file)
+# results
     
 def random_search(dtrain, param_grid, out_file, iteration=1):
     best_auc = 0
     best_params = {}
     results = pd.DataFrame(columns = ['score', 'params', 'iterations'], 
                           index = list(range(iteration)))
-    for i in range(iteration): 
-        param_grid = param_grid
-        eval_results = objective(param_grid, dtrain, i)
-        results.loc[i, :] = {
-            "score": eval_results[1], 
-            "params": eval_results[2], 
-            "iterations": eval_results[3]
-        }
-
-        of_connection = open(out_file, 'a')
+    with open(outfile, 'a', newline='') as of_connection:
         writer = csv.writer(of_connection)
-        writer.writerow([eval_results[1], eval_results[2], eval_results[3]])
-
-        of_connection.close()
+        for i in range(iteration): 
+            param_grid = param_grid
+            eval_results = objective(param_grid, dtrain, i)
+            results.loc[i, :] = {
+                "score": eval_results[1], 
+                "params": eval_results[2], 
+                "iterations": eval_results[3]
+            }
+            writer.writerow([eval_results[1], eval_results[2], eval_results[3]])
         
         auc_score = eval_results[1]
         
