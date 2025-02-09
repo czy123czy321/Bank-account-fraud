@@ -19,7 +19,7 @@ import sys
 import os
 
 
-# In[3]:
+# In[2]:
 
 
 dir_path = os.getcwd()
@@ -30,7 +30,7 @@ print("parent_dir is", parent_dir)
 print("home_dir is", home_dir)
 
 
-# In[4]:
+# In[3]:
 
 
 import yaml
@@ -40,14 +40,14 @@ with open(home_dir+'/params.yaml', 'r') as file:
 params
 
 
-# In[5]:
+# In[4]:
 
 
 data_folder = home_dir+params['data_location']
 print('Data is stored at', data_folder)
 
 
-# In[7]:
+# In[5]:
 
 
 with open(dir_path+"/feature_flag.yaml", "r") as file:
@@ -58,22 +58,28 @@ print(f"Current configuration for feature engineering is: {config}")
 
 # ## 1.1 Import libraries and reading data
 
-# In[24]:
+# In[6]:
 
 
 print("Importing packages and reading data...")
 
 sys.path.append(os.path.abspath("feature_engineering"))
-import pandas as pd
-from  preprocessing import *
+from preprocessing import *
 
+import pandas as pd
 pd.set_option('display.max_columns', 500)
 
 import warnings as wr
 wr.filterwarnings('ignore')
 
 
-# In[6]:
+# In[7]:
+
+
+sys.path
+
+
+# In[8]:
 
 
 df_base = pd.read_csv(f"{data_folder}/Base_backup.csv", header=0)
@@ -82,7 +88,7 @@ df = df_base.copy()
 
 # ## 1.2 Drop features with no variance
 
-# In[7]:
+# In[9]:
 
 
 constant_feature =[]
@@ -95,7 +101,7 @@ df = drop_columns(df, df[constant_feature])
 
 # ### 1.3 Change the dataype of binary features into type boolean
 
-# In[8]:
+# In[10]:
 
 
 print("Changing the dataype of binary features into type boolean")
@@ -111,7 +117,7 @@ print(df[binary_features].dtypes)
 
 # ## 1.3 Train test split
 
-# In[10]:
+# In[11]:
 
 
 print("splitting train/test sets")
@@ -135,13 +141,13 @@ print('Numerical features before feature engineering:', numerical_features)
 
 # ## 2. Switcher
 
-# In[ ]:
+# In[12]:
 
 
 print("Start feature engineering steps...")
 
 
-# In[ ]:
+# In[13]:
 
 
 if config["impute"]:
@@ -151,7 +157,7 @@ else:
     print("Not applying imputation.")
 
 
-# In[ ]:
+# In[14]:
 
 
 if config["one_hot_encoding"]:
@@ -161,7 +167,7 @@ else:
     print("Not applying one hot encoder.")
 
 
-# In[ ]:
+# In[15]:
 
 
 if config["binning"]:
@@ -171,7 +177,7 @@ else:
     print("Not applying binning.")
 
 
-# In[ ]:
+# In[16]:
 
 
 if config["robust_scaler"]:
@@ -181,7 +187,7 @@ else:
     print("Not applying scaler.")
 
 
-# In[ ]:
+# In[17]:
 
 
 if config["outlier_handling"]:
@@ -191,17 +197,23 @@ else:
     print("Not handling outliers")
 
 
-# In[ ]:
+# In[19]:
 
 
 if config["smote"]:
     print("Perfoming SMOTE to handle class imbalance")
-    X_train, y_train = smote(X_train, y_train, over_ratio=0.7, under_ratio=0.9)
+    X_train, y_train = smote(X_train, y_train, over_ratio=config["smote_oversample_ratio"])
 else:
     print("Not applying SMOTE")
 
 
-# In[ ]:
+# In[169]:
+
+
+X_train.nunique()
+
+
+# In[63]:
 
 
 if config["mutual_information"]:
@@ -224,6 +236,36 @@ else:
 
 print("Exporting final dataset...")
 export_final_df(X_train, y_train, X_test, y_test, data_folder)
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:

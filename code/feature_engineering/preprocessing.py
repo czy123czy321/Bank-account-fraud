@@ -421,45 +421,58 @@ def handle_outliers(X_train, y_train):
 
 # # Handle imbalance with SMOTE, only on the training set
 
-# In[7]:
+# In[3]:
 
 
 from collections import Counter
-from imblearn.over_sampling import SMOTE
-from imblearn.under_sampling import RandomUnderSampler
-
-def smote(X_train, y_train, over_ratio=0.8, under_ratio=1.0):
-    """
-    Applies SMOTE for oversampling and RandomUnderSampler for undersampling.
-    
-    :param X_train: Feature matrix.
-    :param y_train: Target vector.
-    :param over_ratio: Oversampling ratio for the minority class (default: 0.8).
-    :param under_ratio: Undersampling ratio for the majority class after oversampling (default: 1.0).
-    :return: Resampled X_train and y_train.
-    """
+from imblearn.over_sampling import SMOTENC
+# from imblearn.over_sampling import SMOTE
+# from imblearn.under_sampling import RandomUnderSampler
+def smote(X_train, y_train, over_ratio=0.7):
+    categorical_features, numerical_features = split_num_cat(X_train)
     print(f"Before SMOTE: {Counter(y_train)}")
     print(f"Before SMOTE, shape of the training set: {X_train.shape}")
+    
+    sm = SMOTENC(categorical_features=categorical_features, random_state=123, sampling_strategy=over_ratio)
+    X_train_smote, y_train_smote = sm.fit_resample(X_train, y_train)
+    
+    print(f"After oversampling: {Counter(y_train_smote)}")
+    print(f"After oversampling, shape of the training set: {X_train_smote.shape}")
 
-    # Oversample the minority class
-    over = SMOTE(sampling_strategy=over_ratio, random_state=2)
-    X_train_res, y_train_res = over.fit_resample(X_train, y_train)
+    return X_train_smote, y_train_smote
 
-    print(f"After oversampling: {Counter(y_train_res)}")
+# def smote(X_train, y_train, over_ratio=0.8, under_ratio=1.0):
+#     """
+#     Applies SMOTE for oversampling and RandomUnderSampler for undersampling.
+    
+#     :param X_train: Feature matrix.
+#     :param y_train: Target vector.
+#     :param over_ratio: Oversampling ratio for the minority class (default: 0.8).
+#     :param under_ratio: Undersampling ratio for the majority class after oversampling (default: 1.0).
+#     :return: Resampled X_train and y_train.
+#     """
+#     print(f"Before SMOTE: {Counter(y_train)}")
+#     print(f"Before SMOTE, shape of the training set: {X_train.shape}")
 
-    # Undersample the majority class
-    under = RandomUnderSampler(sampling_strategy=under_ratio, random_state=2)
-    X_train_resampled, y_train_resampled = under.fit_resample(X_train_res, y_train_res)
+    # # Oversample the minority class
+    # over = SMOTE(sampling_strategy=over_ratio, random_state=2)
+    # X_train_res, y_train_res = over.fit_resample(X_train, y_train)
 
-    print(f"After undersampling: {Counter(y_train_resampled)}")
-    print(f"After undersampling, shape of the training set: {X_train_resampled.shape}")
+    # print(f"After oversampling: {Counter(y_train_res)}")
 
-    return X_train_resampled, y_train_resampled
+    # # Undersample the majority class
+    # under = RandomUnderSampler(sampling_strategy=under_ratio, random_state=2)
+    # X_train_resampled, y_train_resampled = under.fit_resample(X_train_res, y_train_res)
+
+    # print(f"After undersampling: {Counter(y_train_resampled)}")
+    # print(f"After undersampling, shape of the training set: {X_train_resampled.shape}")
+
+    # return X_train_resampled, y_train_resampled
 
 
 # ## Mutual Information and chi2
 
-# In[8]:
+# In[1]:
 
 
 import pandas as pd
@@ -498,7 +511,7 @@ def mutual_information(X_train, y_train):
         plt.title("Mutual Information Scores")
         plt.show()
 
-    plt.figure(dpi=100, figsize=(8, 16))
+    plt.figure(dpi=100, figsize=(12, 16))
     plot_mi_scores(mi_scores)
 
     return mi_scores

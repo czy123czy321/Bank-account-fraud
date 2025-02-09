@@ -1,17 +1,17 @@
-2025-01-29 17:43:48 - Starting workflow for feature engineering.
+2025-02-07 15:58:37 - Starting workflow for feature engineering.
 [NbConvertApp] Converting notebook /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering/preprocessing_notebook.ipynb to script
-[NbConvertApp] Writing 21678 bytes to /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering/preprocessing.py
-2025-01-29 17:43:49 - preprocessing notebook converted to script in /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering.
+[NbConvertApp] Writing 22371 bytes to /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering/preprocessing.py
+2025-02-07 15:58:39 - preprocessing notebook converted to script in /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering.
 [NbConvertApp] Converting notebook /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering/final_feature_engineering.ipynb to script
-[NbConvertApp] Writing 5432 bytes to /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering/final_feature_engineering.py
-2025-01-29 17:43:50 - feature engineering notebook converted to script in /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering.
+[NbConvertApp] Writing 5576 bytes to /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering/final_feature_engineering.py
+2025-02-07 15:58:40 - feature engineering notebook converted to script in /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering.
 Starting setups
 dir_path is /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering
 parent_dir is /Users/zoe/Documents/Bank-account-fraud/code
 home_dir is /Users/zoe/Documents/Bank-account-fraud
 /Users/zoe/Documents/Bank-account-fraud/params.yaml
 Data is stored at /Users/zoe/Documents/Bank-account-fraud/data
-Current configuration for feature engineering is: {'impute': True, 'one_hot_encoding': True, 'smote': True, 'smote_oversample_ratio': 0.8, 'smote_undersample_ratio': 1.0, 'robust_scaler': True, 'binning': True, 'outlier_handling': False, 'mutual_information': False, 'chi2_test': False}
+Current configuration for feature engineering is: {'impute': True, 'one_hot_encoding': True, 'smote': True, 'smote_oversample_ratio': 0.8, 'robust_scaler': True, 'binning': True, 'outlier_handling': False, 'mutual_information': True, 'chi2_test': True}
 Importing packages and reading data...
 Dropping the constant features: ['device_fraud_count']
 Changing the dataype of binary features into type boolean
@@ -310,21 +310,117 @@ Not handling outliers
 Perfoming SMOTE to handle class imbalance
 Before SMOTE: Counter({False: 791080, True: 8920})
 Before SMOTE, shape of the training set: (800000, 53)
-After oversampling: Counter({False: 791080, True: 553756})
-After undersampling: Counter({False: 615284, True: 553756})
-After undersampling, shape of the training set: (1169040, 53)
-Not calculating mutua information
-Not calculating chi2
+After oversampling: Counter({False: 791080, True: 632864})
+After oversampling, shape of the training set: (1423944, 53)
+Calculating mutual information scores based on the final training set
+Mutual Information Scores:
+scaled_credit_risk_score                   0.637845
+scaled_current_address_months_count        0.631322
+scaled_zip_count_4w                        0.619087
+scaled_date_of_birth_distinct_emails_4w    0.509491
+scaled_bank_branch_count_8w                0.462787
+scaled_prev_address_months_count           0.337535
+prev_address_months_count_was_missing      0.195010
+income                                     0.132679
+housing_status_BA                          0.124577
+bank_months_count_was_missing              0.105047
+customer_age                               0.102449
+device_os_windows                          0.090626
+has_other_cards                            0.062992
+phone_home_valid                           0.060131
+keep_alive_session                         0.058414
+device_os_linux                            0.052239
+bank_months_count_binned                   0.043885
+housing_status_BE                          0.043164
+device_os_other                            0.041643
+proposed_credit_limit                      0.039458
+housing_status_BB                          0.037013
+scaled_velocity_4w                         0.035446
+employment_status_CA                       0.032760
+housing_status_BC                          0.032196
+scaled_name_email_similarity               0.031747
+email_is_free                              0.030533
+scaled_intended_balcon_amount              0.029692
+scaled_days_since_request                  0.029514
+month                                      0.028528
+employment_status_CB                       0.025818
+payment_type_AA                            0.021465
+employment_status_CF                       0.014785
+scaled_session_length_in_minutes           0.013396
+payment_type_AC                            0.012462
+scaled_velocity_24h                        0.010565
+scaled_velocity_6h                         0.009586
+phone_mobile_valid                         0.009557
+employment_status_CD                       0.009050
+housing_status_BD                          0.008394
+employment_status_CE                       0.007883
+device_os_macintosh                        0.006309
+foreign_request                            0.005915
+payment_type_AD                            0.004372
+device_distinct_emails_8w                  0.003510
+source_TELEAPP                             0.002944
+source_INTERNET                            0.002779
+device_os_x11                              0.001903
+employment_status_CG                       0.001448
+housing_status_BF                          0.000494
+payment_type_AB                            0.000415
+employment_status_CC                       0.000413
+housing_status_BG                          0.000192
+payment_type_AE                            0.000000
+Name: MI Scores, dtype: float64
+Calculating chi2 based on the final training set
+Chi-Square Test Results:
+                                  feature    chi2_score        p_value
+0                                  income  3.003535e+04   0.000000e+00
+37                      device_os_windows  1.383048e+05   0.000000e+00
+36                        device_os_other  8.589138e+04   0.000000e+00
+35                    device_os_macintosh  1.424256e+04   0.000000e+00
+34                        device_os_linux  1.055065e+05   0.000000e+00
+33                         source_TELEAPP  4.059106e+03   0.000000e+00
+29                      housing_status_BE  8.925828e+04   0.000000e+00
+28                      housing_status_BD  1.545892e+04   0.000000e+00
+27                      housing_status_BC  6.338437e+04   0.000000e+00
+26                      housing_status_BB  7.840005e+04   0.000000e+00
+25                      housing_status_BA  2.135232e+05   0.000000e+00
+23                   employment_status_CF  2.789170e+04   0.000000e+00
+22                   employment_status_CE  1.440603e+04   0.000000e+00
+21                   employment_status_CD  1.647491e+04   0.000000e+00
+38                          device_os_x11  4.393272e+03   0.000000e+00
+18                   employment_status_CA  1.561985e+04   0.000000e+00
+19                   employment_status_CB  5.956919e+04   0.000000e+00
+7                         foreign_request  1.308744e+04   0.000000e+00
+1                            customer_age  4.646555e+05   0.000000e+00
+2                           email_is_free  3.005755e+04   0.000000e+00
+3                        phone_home_valid  1.147607e+05   0.000000e+00
+4                      phone_mobile_valid  1.741307e+03   0.000000e+00
+5                         has_other_cards  1.240853e+05   0.000000e+00
+6                   proposed_credit_limit  4.196504e+07   0.000000e+00
+16                        payment_type_AD  1.098518e+04   0.000000e+00
+8                      keep_alive_session  9.271140e+04   0.000000e+00
+39               bank_months_count_binned  2.294083e+04   0.000000e+00
+10                                  month  1.124139e+04   0.000000e+00
+11          bank_months_count_was_missing  2.326443e+04   0.000000e+00
+12  prev_address_months_count_was_missing  2.915881e+04   0.000000e+00
+13                        payment_type_AA  4.812594e+04   0.000000e+00
+15                        payment_type_AC  2.488404e+04   0.000000e+00
+30                      housing_status_BF  1.062827e+03  3.965660e-233
+14                        payment_type_AB  6.137881e+02  1.678129e-135
+24                   employment_status_CG  2.721349e+02   3.887071e-61
+17                        payment_type_AE  1.856000e+02   2.902779e-42
+31                      housing_status_BG  1.564202e+02   6.852269e-36
+20                   employment_status_CC  4.502857e+01   1.941810e-11
+9               device_distinct_emails_8w  1.858828e+01   1.622145e-05
+32                        source_INTERNET  1.639710e+01   5.136367e-05
 Exporting final dataset...
-Final X_train shape (1169040, 53)
-Final y_train shape (1169040,)
+Final X_train shape (1423944, 53)
+Final y_train shape (1423944,)
 Final X_test shape (200000, 53)
 Final y_test shape (200000,)
 Feature engineering is done. Exporting the final training data and test data to location: /Users/zoe/Documents/Bank-account-fraud/data
 Data successfully exported into csv!
-2025-01-29 17:44:55 - Feature engineering Python script executed successfully.
-2025-01-29 17:44:55 - x_train_data.csv successfully saved in /Users/zoe/Documents/Bank-account-fraud/data.
-2025-01-29 17:44:55 - x_test_data.csv successfully saved in /Users/zoe/Documents/Bank-account-fraud/data.
-2025-01-29 17:44:55 - y_train_data.csv successfully saved in /Users/zoe/Documents/Bank-account-fraud/data.
-2025-01-29 17:44:55 - y_test_data.csv successfully saved in /Users/zoe/Documents/Bank-account-fraud/data.
-2025-01-29 17:44:55 - Feature engineering completed successfully. Final dataset stored in /Users/zoe/Documents/Bank-account-fraud/data.
+2025-02-07 16:13:25 - Feature engineering Python script executed successfully.
+2025-02-07 16:13:25 - x_train_data.csv successfully saved in /Users/zoe/Documents/Bank-account-fraud/data.
+2025-02-07 16:13:25 - x_test_data.csv successfully saved in /Users/zoe/Documents/Bank-account-fraud/data.
+2025-02-07 16:13:25 - y_train_data.csv successfully saved in /Users/zoe/Documents/Bank-account-fraud/data.
+2025-02-07 16:13:25 - y_test_data.csv successfully saved in /Users/zoe/Documents/Bank-account-fraud/data.
+2025-02-07 16:13:25 - Feature engineering completed successfully. Final dataset stored in /Users/zoe/Documents/Bank-account-fraud/data.
