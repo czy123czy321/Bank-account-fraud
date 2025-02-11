@@ -1,0 +1,232 @@
+2025-02-10 11:23:28 - Starting workflow for feature engineering.
+[NbConvertApp] Converting notebook /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering/preprocessing_notebook.ipynb to script
+[NbConvertApp] Writing 22603 bytes to /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering/preprocessing.py
+2025-02-10 11:23:30 - preprocessing notebook converted to script in /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering.
+[NbConvertApp] Converting notebook /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering/final_feature_engineering.ipynb to script
+[NbConvertApp] Writing 5832 bytes to /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering/final_feature_engineering.py
+2025-02-10 11:23:31 - feature engineering notebook converted to script in /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering.
+Starting setups
+dir_path is /Users/zoe/Documents/Bank-account-fraud/code/feature_engineering
+parent_dir is /Users/zoe/Documents/Bank-account-fraud/code
+home_dir is /Users/zoe/Documents/Bank-account-fraud
+/Users/zoe/Documents/Bank-account-fraud/params.yaml
+Data is stored at /Users/zoe/Documents/Bank-account-fraud/data
+Current configuration for feature engineering is: {'impute': True, 'one_hot_encoding': False, 'smote': False, 'smote_oversample_ratio': 0.8, 'robust_scaler': True, 'binning': True, 'outlier_handling': False, 'mutual_information': True, 'chi2_test': True}
+Importing packages and reading data...
+Dropping the constant features: ['device_fraud_count']
+Changing the dataype of binary features into type boolean
+fraud_bool            bool
+email_is_free         bool
+phone_home_valid      bool
+phone_mobile_valid    bool
+has_other_cards       bool
+foreign_request       bool
+keep_alive_session    bool
+dtype: object
+splitting train/test sets
+Training set (X_train) before feature engineering: (800000, 30)
+Test set (X_test) before feature engineering: (200000, 30)
+Training set (y_train) before feature engineering: (800000,)
+Test set (y_test) before feature engineering: (200000,)
+Categorical features before feature engineering: ['income', 'customer_age', 'payment_type', 'employment_status', 'email_is_free', 'housing_status', 'phone_home_valid', 'phone_mobile_valid', 'has_other_cards', 'proposed_credit_limit', 'foreign_request', 'source', 'device_os', 'keep_alive_session', 'device_distinct_emails_8w', 'month']
+Numerical features before feature engineering: ['name_email_similarity', 'prev_address_months_count', 'current_address_months_count', 'days_since_request', 'intended_balcon_amount', 'zip_count_4w', 'velocity_6h', 'velocity_24h', 'velocity_4w', 'bank_branch_count_8w', 'date_of_birth_distinct_emails_4w', 'credit_risk_score', 'bank_months_count', 'session_length_in_minutes']
+Start feature engineering steps...
+Applying imputation for missing values...
+Features with missing values represented by -1:
+['prev_address_months_count', 'current_address_months_count', 'bank_months_count', 'session_length_in_minutes', 'device_distinct_emails_8w']
+Train set null values after imputation:
+prev_address_months_count       0
+current_address_months_count    0
+bank_months_count               0
+session_length_in_minutes       0
+device_distinct_emails_8w       0
+dtype: int64
+
+Test set null values after imputation:
+prev_address_months_count       0
+current_address_months_count    0
+bank_months_count               0
+session_length_in_minutes       0
+device_distinct_emails_8w       0
+dtype: int64
+Training set shape after imputation: (800000, 32)
+Test set shape after imputation: (200000, 32)
+Not applying one hot encoder.
+Applying binning...
+the minimum value of bank_months_count is 0.0
+
+ Bin Ranges:
+Bin 1: [0.0, 1.0) -> Median: 0
+Bin 2: [1.0, 5) -> Median: 2.5
+Bin 3: [5, 9) -> Median: 6.5
+Bin 4: [9, 13) -> Median: 10.5
+Bin 5: [13, 17) -> Median: 14.5
+Bin 6: [17, 21) -> Median: 18.5
+Bin 7: [21, 25) -> Median: 22.5
+Bin 8: [25, 29) -> Median: 26.5
+Bin 9: [29, 33) -> Median: 30.5
+
+ Bin medians and counts in training set:
+
+bank_months_count_binned
+0.0     202886
+2.5     186125
+6.5      37373
+10.5     53539
+14.5     51345
+18.5     31604
+22.5     30427
+26.5    119801
+30.5     86900
+Name: count, dtype: int64
+Final shape after binning - Train: (800000, 32), Test: (200000, 32)
+Applying robust scaling...
+Categorical features: ['income', 'customer_age', 'payment_type', 'employment_status', 'email_is_free', 'housing_status', 'phone_home_valid', 'phone_mobile_valid', 'has_other_cards', 'proposed_credit_limit', 'foreign_request', 'source', 'device_os', 'keep_alive_session', 'device_distinct_emails_8w', 'month', 'bank_months_count_was_missing', 'prev_address_months_count_was_missing', 'bank_months_count_binned']
+Numerical features: ['name_email_similarity', 'prev_address_months_count', 'current_address_months_count', 'days_since_request', 'intended_balcon_amount', 'zip_count_4w', 'velocity_6h', 'velocity_24h', 'velocity_4w', 'bank_branch_count_8w', 'date_of_birth_distinct_emails_4w', 'credit_risk_score', 'session_length_in_minutes']
+              income  name_email_similarity  prev_address_months_count  \
+count  800000.000000          800000.000000              800000.000000   
+mean        0.562838               0.493679                  51.640779   
+std         0.290284               0.289083                  37.007722   
+min         0.100000               0.000001                   5.000000   
+25%         0.300000               0.225180                  33.000000   
+50%         0.600000               0.492253                  51.000000   
+75%         0.800000               0.755595                  56.000000   
+max         0.900000               0.999999                 381.000000   
+
+       current_address_months_count   customer_age  days_since_request  \
+count                 800000.000000  800000.000000        8.000000e+05   
+mean                      86.881245      33.683575        1.024581e+00   
+std                       88.270189      12.023340        5.384940e+00   
+min                        0.000000      10.000000        4.036860e-09   
+25%                       20.000000      20.000000        7.183933e-03   
+50%                       53.000000      30.000000        1.517071e-02   
+75%                      130.000000      40.000000        2.632796e-02   
+max                      428.000000      90.000000        7.845690e+01   
+
+       intended_balcon_amount   zip_count_4w    velocity_6h   velocity_24h  \
+count           800000.000000  800000.000000  800000.000000  800000.000000   
+mean                 8.666942    1572.691783    5664.123809    4768.744070   
+std                 20.255749    1005.553072    3010.204130    1478.809582   
+min                -15.530555       1.000000    -170.603072    1320.283991   
+25%                 -1.181387     894.000000    3435.962936    3592.988203   
+50%                 -0.830680    1263.000000    5317.126477    4749.005380   
+75%                  4.984334    1943.000000    7681.772107    5750.629217   
+max                112.956928    6700.000000   16640.749743    9506.896596   
+
+         velocity_4w  bank_branch_count_8w  date_of_birth_distinct_emails_4w  \
+count  800000.000000         800000.000000                     800000.000000   
+mean     4856.113352            184.627865                          9.502435   
+std       919.994441            459.934773                          5.033803   
+min      2825.748405              0.000000                          0.000000   
+25%      4268.319057              1.000000                          6.000000   
+50%      4913.667485              9.000000                          9.000000   
+75%      5487.721416             25.000000                         13.000000   
+max      6994.764201           2385.000000                         39.000000   
+
+       credit_risk_score  proposed_credit_limit  session_length_in_minutes  \
+count      800000.000000          800000.000000              800000.000000   
+mean          131.055336             516.355675                   7.560475   
+std            69.742814             487.806283                   8.034326   
+min          -169.000000             190.000000                   0.000872   
+25%            83.000000             200.000000                   3.121877   
+50%           122.000000             200.000000                   5.123322   
+75%           178.000000             500.000000                   8.870898   
+max           386.000000            2100.000000                  83.376775   
+
+       device_distinct_emails_8w          month  \
+count              800000.000000  800000.000000   
+mean                    1.019105       3.289231   
+std                     0.176621       2.209984   
+min                     0.000000       0.000000   
+25%                     1.000000       1.000000   
+50%                     1.000000       3.000000   
+75%                     1.000000       5.000000   
+max                     2.000000       7.000000   
+
+       bank_months_count_was_missing  prev_address_months_count_was_missing  \
+count                  800000.000000                          800000.000000   
+mean                        0.253607                               0.712875   
+std                         0.435076                               0.452421   
+min                         0.000000                               0.000000   
+25%                         0.000000                               0.000000   
+50%                         0.000000                               1.000000   
+75%                         1.000000                               1.000000   
+max                         1.000000                               1.000000   
+
+       bank_months_count_binned  scaled_name_email_similarity  \
+count             800000.000000                 800000.000000   
+mean                  11.386696                      0.002689   
+std                   11.559845                      0.545014   
+min                    0.000000                     -0.928051   
+25%                    0.000000                     -0.503517   
+50%                    6.500000                      0.000000   
+75%                   26.500000                      0.496483   
+max                   30.500000                      0.957262   
+
+       scaled_prev_address_months_count  scaled_current_address_months_count  \
+count                     800000.000000                        800000.000000   
+mean                           0.027860                             0.308011   
+std                            1.609031                             0.802456   
+min                           -2.000000                            -0.481818   
+25%                           -0.782609                            -0.300000   
+50%                            0.000000                             0.000000   
+75%                            0.217391                             0.700000   
+max                           14.347826                             3.409091   
+
+       scaled_days_since_request  scaled_intended_balcon_amount  \
+count               8.000000e+05                  800000.000000   
+mean                5.272720e+01                       1.540391   
+std                 2.812857e+02                       3.285220   
+min                -7.924511e-01                      -2.384129   
+25%                -4.171941e-01                      -0.056880   
+50%                -4.530716e-17                       0.000000   
+75%                 5.828059e-01                       0.943120   
+max                 4.097453e+03                      18.454873   
+
+       scaled_zip_count_4w  scaled_velocity_6h  scaled_velocity_24h  \
+count        800000.000000       800000.000000         8.000000e+05   
+mean              0.295226            0.081727         9.148273e-03   
+std               0.958583            0.708982         6.853826e-01   
+min              -1.203051           -1.292505        -1.589107e+00   
+25%              -0.351764           -0.443064        -5.357783e-01   
+50%               0.000000            0.000000        -2.107614e-16   
+75%               0.648236            0.556936         4.642217e-01   
+max               5.183031            2.667012         2.205136e+00   
+
+       scaled_velocity_4w  scaled_bank_branch_count_8w  \
+count        8.000000e+05                800000.000000   
+mean        -4.719864e-02                     7.317828   
+std          7.544634e-01                    19.163949   
+min         -1.712248e+00                    -0.375000   
+25%         -5.292334e-01                    -0.333333   
+50%          3.729266e-16                     0.000000   
+75%          4.707666e-01                     0.666667   
+max          1.706653e+00                    99.000000   
+
+       scaled_date_of_birth_distinct_emails_4w  scaled_credit_risk_score  \
+count                            800000.000000             800000.000000   
+mean                                  0.071776                  0.095319   
+std                                   0.719115                  0.734135   
+min                                  -1.285714                 -3.063158   
+25%                                  -0.428571                 -0.410526   
+50%                                   0.000000                  0.000000   
+75%                                   0.571429                  0.589474   
+max                                   4.285714                  2.778947   
+
+       scaled_session_length_in_minutes  
+count                     800000.000000  
+mean                           0.423925  
+std                            1.397512  
+min                           -0.891013  
+25%                           -0.348137  
+50%                            0.000000  
+75%                            0.651863  
+max                           13.611614  
+Final shape after binning - Train: (800000, 32), Test: (200000, 32)
+Not handling outliers
+Not applying SMOTE
+Traceback (most recent call last):
+  File "/Users/zoe/Documents/Bank-account-fraud/code/feature_engineering/final_feature_engineering.py", line 216, in <module>
+    pickle.dump(X_train, y_train, f)
+TypeError: '_io.BufferedWriter' object cannot be interpreted as an integer
+2025-02-10 11:23:50 - Failed to execute the feature engineering Python script.

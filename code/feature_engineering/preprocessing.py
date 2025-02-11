@@ -155,7 +155,7 @@ def impute_missing_values(X_train, X_test):
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
 
-def one_hot_encode(X_train, X_test):
+def one_hot_encode(X_train, X_test, categorical_features):
     """
     Applies one-hot encoding to categorical features in the dataset.
 
@@ -173,8 +173,8 @@ def one_hot_encode(X_train, X_test):
     """
 
     # Identify categorical features
-    categorical_features = [col for col in X_train.columns if X_train[col].dtypes == 'object']
-    print("Categorical features to encode:", categorical_features)
+    # categorical_features = [col for col in X_train.columns if X_train[col].nunique < 'object']
+    print("Features to encode:", categorical_features)
 
     if not categorical_features:
         print("No categorical features found. Skipping one-hot encoding.")
@@ -286,7 +286,9 @@ def bin_bank_months_count(X_train, X_test, y_train):
     plt.title("Proportion of Fraud by Bank Months Count (Binned)")
     plt.xticks(rotation=45)
     plt.tight_layout()
+    plt.savefig("fraud_by_bank_month_count.png")
     plt.show()
+    
 
     # Remove temporary fraud column
     X_train_binned.drop(columns=["fraud_bool"], inplace=True)
@@ -509,6 +511,7 @@ def mutual_information(X_train, y_train):
         plt.barh(width, scores)
         plt.yticks(width, ticks)
         plt.title("Mutual Information Scores")
+        plt.savefig("mi_scores.png", dpi=300, bbox_inches="tight")
         plt.show()
 
     plt.figure(dpi=100, figsize=(12, 16))
@@ -541,6 +544,7 @@ def chi2_test(X_train, y_train):
     plt.figure(figsize=(15, 10))
     sns.barplot(data=chi2_output_significant, x='chi2_score', y='feature')
     plt.title("Significant Chi-Square Scores")
+    plt.savefig("chi_square.png", dpi=300, bbox_inches="tight")
     plt.show()
 
     return chi2_output
@@ -552,10 +556,12 @@ def chi2_test(X_train, y_train):
 
 # # Finalize data for training
 
-# In[9]:
+# In[1]:
 
 
-def export_final_df(X_train, y_train, X_test, y_test, data_folder):
+def export_final_df(X_train, y_train, X_test, y_test, data_folder, 
+                    x_train_filename, y_train_filename, 
+                    x_test_filename, y_test_filename):
     bool_features = [col for col in X_train.columns if X_train[col].dtypes == 'bool']
     X_train[bool_features] = X_train[bool_features].astype("int")
     y_train = y_train.astype("int")
@@ -567,12 +573,25 @@ def export_final_df(X_train, y_train, X_test, y_test, data_folder):
     print(f'Final X_test shape {X_test.shape}')
     print(f'Final y_test shape {y_test.shape}')
 
-    print("Feature engineering is done. Exporting the final training data and test data to location:", data_folder)
+    print("Feature engineering is done. Exporting the final training and test data to:", data_folder)
+
+    X_train.to_csv(f"{data_folder}/{x_train_filename}", index=True)
+    print(f'{x_train_filename}is exported to {data_folder}')
     
-    X_train.to_csv(data_folder + "/x_train_data.csv", index=True)
-    X_test.to_csv(data_folder + "/x_test_data.csv")
+    X_test.to_csv(f"{data_folder}/{x_test_filename}")
+    print(f'{x_test_filename}is exported to {data_folder}')
     
-    y_train.to_csv(data_folder + "/y_train_data.csv")
-    y_test.to_csv(data_folder + "/y_test_data.csv")
-    print("Data successfully exported into csv!")
+    y_train.to_csv(f"{data_folder}/{y_train_filename}")
+    print(f'{y_train_filename}is exported to {data_folder}')
+    
+    y_test.to_csv(f"{data_folder}/{y_test_filename}")
+    print(f'{y_test_filename}is exported to {data_folder}')
+
+    print("Data successfully exported into CSV!")
+
+
+# In[ ]:
+
+
+
 

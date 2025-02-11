@@ -115,10 +115,72 @@ df[binary_features] = df[binary_features].astype(bool)
 print(df[binary_features].dtypes)
 
 
-# ## 1.3 Train test split
+# # Binning and target encoding
 
 # In[11]:
 
+
+# target encoding for housing_status instead of ohe
+# use the proportion of the fraud cases of each category as the value 
+
+df_encoded = df.copy()
+df_encoded['housing_status_encoded'] = df_encoded['housing_status'].apply(lambda x: 'BA' if x == 'BA' else 'Other')
+
+fraud_proportion = df_encoded[df_encoded['fraud_bool'] == 1]['housing_status_encoded'].value_counts() / df_encoded['housing_status_encoded'].value_counts()
+fraud_proportion.sort_index()
+print("variable housing_status - fraud_proportion by category \n", fraud_proportion)
+
+df_encoded['housing_status_encoded'] = df_encoded['housing_status_encoded'].map(fraud_proportion)
+
+df_encoded['housing_status_encoded']
+df_encoded = df_encoded.drop(columns=['housing_status'])
+
+
+# In[12]:
+
+
+bins = {
+    '10-50': range(10, 51), 
+    '60-90': range(60, 91) 
+}
+df_encoded_binned = df_encoded.copy()
+df_encoded_binned['customer_age_binned'] = df_encoded_binned['customer_age'].apply(
+    lambda x: '10-50' if x in bins['10-50']
+    else '60-90' if x in bins['60-90']
+    else 'other'
+)
+
+fraud_proportion_age = df_encoded_binned[df_encoded_binned['fraud_bool'] == 1]['customer_age_binned'].value_counts() / df_encoded_binned['customer_age_binned'].value_counts()
+fraud_proportion_age.sort_index()
+print("variable housing_status - fraud_proportion by category \n", fraud_proportion_age)
+
+df_encoded_binned['customer_age_encoded'] = df_encoded_binned['customer_age_binned'].map(fraud_proportion_age)
+df_encoded_binned = df_encoded_binned.drop(columns=['customer_age_binned'])
+df_encoded_binned['customer_age_encoded']
+
+# X_train_binned['customer_age_binned_encoded'] = X_train_binned['customer_age_binned'].map(bin_to_fraud_proportion)
+
+
+# ### potentially repeat the same for proposed_credit_limit, income, payment_type, employment_status
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# ## 1.3 Train test split
+
+# In[13]:
+
+
+df = df_encoded_binned.copy()
 
 print("splitting train/test sets")
 y = df['fraud_bool']
@@ -141,13 +203,13 @@ print('Numerical features before feature engineering:', numerical_features)
 
 # ## 2. Switcher
 
-# In[12]:
+# In[14]:
 
 
 print("Start feature engineering steps...")
 
 
-# In[13]:
+# In[15]:
 
 
 if config["impute"]:
@@ -157,27 +219,36 @@ else:
     print("Not applying imputation.")
 
 
-# In[15]:
+# In[16]:
 
 
 if config["binning"]:
-    print("Applying binning...")
+    print("Applying binning on bank_months_count...")
     X_train, X_test = bin_bank_months_count(X_train, X_test, y_train)
 else:
     print("Not applying binning.")
 
 
-# In[14]:
+# In[17]:
 
 
+cat_features, num_features = split_num_cat(X_train)
+features_to_ohe = ['source', 'payment_type', 'employment_status', 
+                   'device_os', 
+                   'device_distinct_emails_8w',]
+# for x in X_train[cat_features]: 
+#     if X_train[x].nunique() < 9 and  X_train[x].nunique() > 2:
+#         features_to_ohe.append(x)
+features_to_ohe
+        
 if config["one_hot_encoding"]:
     print("Applying one-hot encoding...")
-    X_train, X_test = one_hot_encode(X_train, X_test)
+    X_train, X_test = one_hot_encode(X_train, X_test, features_to_ohe)
 else:
     print("Not applying one hot encoder.")
 
 
-# In[16]:
+# In[18]:
 
 
 if config["robust_scaler"]:
@@ -187,7 +258,7 @@ else:
     print("Not applying scaler.")
 
 
-# In[17]:
+# In[19]:
 
 
 if config["outlier_handling"]:
@@ -197,7 +268,7 @@ else:
     print("Not handling outliers")
 
 
-# In[ ]:
+# In[20]:
 
 
 if config["smote"]:
@@ -207,26 +278,58 @@ else:
     print("Not applying SMOTE")
 
 
-# In[169]:
+# ## Feature selection
+
+# In[21]:
 
 
+pd.set_option("display.max_rows", None)
 print(X_train.nunique())
 
 
-# In[63]:
+# In[34]:
+
+
+categorical_var, numerical_var = split_num_cat(X_train)
+len(categorical_var)
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[36]:
 
 
 if config["mutual_information"]:
     print("Calculating mutual information scores based on the final training set")
     mi_scores = mutual_information(X_train, y_train)
 else:
-    print("Not calculating mutua information")
-    
+    print("Not calculating mutual information")
+
+
+# In[22]:
+
+
 if config["chi2_test"]:
-    print("Calculating chi2 based on the final training set")
-    chi2_results = chi2_test(X_train, y_train)
+   print("Calculating chi2 based on the final training set")
+   chi2_results = chi2_test(X_train, y_train)
 else:
-    print("Not calculating chi2")
+   print("Not calculating chi2")
 
 
 # # Save the final output 
@@ -234,16 +337,19 @@ else:
 # In[ ]:
 
 
+# print("Exporting final dataset...")
+# export_final_df(X_train, y_train, X_test, y_test, data_folder, 
+#                 "no_smote_x_train.csv", "no_smote_y_train.csv", 
+#                 "no_smote_x_test.csv", "no_smote_y_test.csv")
+
+
+# In[23]:
+
+
 print("Exporting final dataset...")
 export_final_df(X_train, y_train, X_test, y_test, data_folder, 
-                "no_smote_x_train.csv", "no_smote_y_train.csv", 
-                "no_smote_x_test.csv", "no_smote_y_test.csv")
-
-
-# In[ ]:
-
-
-
+                "target_encoded_x_train.csv", "target_encoded_y_train.csv", 
+                "target_encoded_x_test.csv", "target_encoded_y_test.csv")
 
 
 # In[ ]:
